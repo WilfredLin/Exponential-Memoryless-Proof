@@ -1,0 +1,51 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Function to compute the probability density function of an exponential distribution
+def exponential_pdf(x, lam):
+    return lam * np.exp(-lam * x)
+
+# Function to compute the cumulative distribution function of an exponential distribution
+def exponential_cdf(x, lam):
+    return 1 - np.exp(-lam * x)
+
+# Parameters
+lam = 1  # rate parameter
+x = np.linspace(0, 5, 100)
+
+# Calculate PDF and CDF
+pdf_values = exponential_pdf(x, lam)
+cdf_values = exponential_cdf(x, lam)
+
+# Memoryless property demonstration
+# P(X > s + t | X > s) = P(X > t)
+# Let's choose s = 1 and t = 2
+s = 1
+t = 2
+P_X_gt_s_plus_t = 1 - cdf_values[np.searchsorted(x, s + t)]
+P_X_gt_t = 1 - cdf_values[np.searchsorted(x, t)]
+
+# Print the results
+print(f'P(X > {s + t} | X > {s}) = {P_X_gt_s_plus_t}')
+print(f'P(X > {t}) = {P_X_gt_t}')
+
+# Plotting the PDF and CDF
+plt.figure(figsize=(12, 6))
+plt.subplot(1, 2, 1)
+plt.plot(x, pdf_values, label='PDF', color='blue')
+plt.title('Exponential Distribution PDF')
+plt.xlabel('x')
+plt.ylabel('Density')
+plt.grid()
+plt.legend()
+
+plt.subplot(1, 2, 2)
+plt.plot(x, cdf_values, label='CDF', color='orange')
+plt.title('Exponential Distribution CDF')
+plt.xlabel('x')
+plt.ylabel('Cumulative Probability')
+plt.grid()
+plt.legend()
+
+plt.tight_layout()
+plt.show()
